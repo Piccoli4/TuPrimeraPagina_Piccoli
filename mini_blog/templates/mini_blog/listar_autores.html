@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Lista de Autores</h2>
+
+    {% if autores %}
+        <ul>
+            {% for autor in autores %}
+                <li><strong>{{ autor.nombre }}</strong> — {{ autor.email }}<br>
+                    {{ autor.biografia }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay autores cargados aún.</p>
+    {% endif %}
+{% endblock %}

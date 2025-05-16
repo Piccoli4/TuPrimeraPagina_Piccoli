@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Blog</title>
+    <link rel="icon" href="{% static 'pga_tricolor.ico' %}" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <h1>Mini Blog</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Inicio</a></li>
+                <li><a href="{% url 'crear_autor' %}">Nuevo Autor</a></li>
+                <li><a href="{% url 'listar_autores' %}">Listar Autores</a></li>
+                <li><a href="{% url 'crear_categoria' %}">Nueva Categoría</a></li>
+                <li><a href="{% url 'crear_post' %}">Nuevo Post</a></li>
+                <li><a href="{% url 'buscar_post' %}">Buscar Post</a></li>
+            </ul>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <hr>
+        <p>&copy; 2024 - Guido Augusto Piccoli</p>
+    </footer>
+</body>
+</html>
