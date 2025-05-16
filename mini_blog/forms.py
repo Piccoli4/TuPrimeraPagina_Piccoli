@@ -5,7 +5,7 @@ from .models import Autor, Categoria, Post
 class AutorForm(forms.ModelForm):
     class Meta:
         model = Autor
-        fields = ['nombre', 'email', 'biografia']
+        fields = ['nombre', 'apellido', 'email', 'biografia']
 
 
 # Formulario para crear categorías

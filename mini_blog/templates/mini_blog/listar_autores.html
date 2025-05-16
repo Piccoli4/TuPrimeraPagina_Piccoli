@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 
 {% block content %}
     <h2>Lista de Autores</h2>
@@ -6,7 +6,7 @@
     {% if autores %}
         <ul>
             {% for autor in autores %}
-                <li><strong>{{ autor.nombre }}</strong> — {{ autor.email }}<br>
+                <li><strong>{{ autor.nombre }} {{autor.apellido}}</strong> — {{ autor.email }}<br>
                     {{ autor.biografia }}
                 </li>
             {% endfor %}
