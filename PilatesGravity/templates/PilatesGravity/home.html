@@ -1,15 +1,509 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-    <div class="home-container">
-        <h2>Bienvenido</h2>
-        <p>Este es el sistema de gestión de turnos del estudio de pilates.</p>
+    <!-- Contenido de Inicio --> 
+    <section id="Inicio" class="hero-section">
+        <!-- Fondo decorativo con ondas -->
+        <div class="hero-background">
+            <svg viewBox="0 0 1440 320" class="wave wave1">
+                <path fill="#5D768B" fill-opacity="0.1"
+                    d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L0,320Z" />
+            </svg>
+            <svg viewBox="0 0 1440 320" class="wave wave2">
+                <path fill="#C8B39B" fill-opacity="0.15"
+                    d="M0,288L48,272C96,256,192,224,288,213.3C384,203,480,213,576,229.3C672,245,768,267,864,261.3C960,256,1056,224,1152,213.3C1248,203,1344,213,1392,218.7L1440,224L1440,320L0,320Z" />
+            </svg>
+        </div>
 
-        <ul class="home-menu">
-            <li><a href="{% url 'crear_cliente' %}">➕ Registrar nuevo cliente</a></li>
-            <li><a href="{% url 'crear_clase' %}">📅 Crear nueva clase</a></li>
-            <li><a href="{% url 'crear_turno' %}">📝 Reservar turno</a></li>
-            <li><a href="{% url 'buscar_turno' %}">🔍 Buscar turnos por cliente</a></li>
-        </ul>
-    </div>
+        <!-- Contenido de Home --> 
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Descubre <br><span>Pilates Gravity</span></h1>
+                <p>Transforma tu cuerpo, equilibra tu mente y eleva tu bienestar con nuestro método único de Pilates.</p>
+                <div class="hero-buttons">
+                    <a href="" class="btn btn-primary">Reserva tu clase</a>
+                    <a href="" class="btn btn-secondary">Conoce más</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="{% static 'img/inicio.webp' %}" alt="Imagen de Pilates" class="img-hero">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido de Nosotros -->
+    <section id="Nosotros" class="about-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Sobre Nosotros</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="about-content">
+                <div class="about-image">
+                    <div class="stacked-images carousel">
+                        <img src="{% static 'img/nosotros.webp' %}" alt="Pilates Gravity" class="img-stacked img-1">
+                        <img src="{% static 'img/nosotros2.webp' %}" alt="Pilates Gravity" class="img-stacked img-2">
+                        <img src="{% static 'img/nosotros3.webp' %}" alt="Pilates Gravity" class="img-stacked img-3">
+                    </div>
+                </div>
+                <div class="about-text">
+                    <h3>Nuestra Filosofía</h3>
+                    <p>En Pilates Gravity, creemos que el verdadero bienestar surge cuando el cuerpo y la mente trabajan en perfecta sincronía...</p>
+                    <p>Con más de 5 años de experiencia, nuestro equipo de instructores certificados te guiará en un viaje de autodescubrimiento...</p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <span class="stat-number">+5</span>
+                            <span class="stat-label">Años de experiencia</span>
+                        </div>
+                        <div class="divider-vertical"></div>
+                        <div class="stat">
+                            <span class="stat-number">+200</span>
+                            <span class="stat-label">Clientes satisfechos</span>
+                        </div>
+                        <div class="divider-vertical"></div>
+                        <div class="stat">
+                            <span class="stat-number">+10</span>
+                            <span class="stat-label">Clases semanales</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> 
+
+    <!-- Contenido de Beneficios -->
+    <section id="Beneficios" class="benefits-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Beneficios del Pilates</h2>
+                <div class="divider"></div>
+                <p class="subtitle">
+                    Descubre cómo el método Pilates puede transformar tu cuerpo y mente con beneficios duraderos para tu salud y bienestar.
+                </p>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-card card-1">
+                    <div class="icon-wrapper">
+                        <svg class="benefit-icon" viewBox="0 0 24 24" fill="#C8B39B" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/>
+                            <path fill="white" d="M7.5 10.5L12 15L16.5 10.5"/>
+                        </svg>
+                    </div>
+                    <h3>Fortalece tu centro</h3>
+                    <p>Desarrolla un centro fuerte y estable, mejorando tu postura y reduciendo dolores de espalda.</p>
+                </div>
+
+                <div class="benefit-card card-2">
+                    <div class="icon-wrapper">
+                        <svg class="benefit-icon" viewBox="0 0 24 24" fill="#C8B39B" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                    </div>
+                    <h3>Aumenta la Flexibilidad</h3>
+                    <p>Mejora tu rango de movimiento y elasticidad muscular con ejercicios de estiramiento controlado.</p>
+                </div>
+
+                <div class="benefit-card card-3">
+                    <div class="icon-wrapper">
+                        <svg class="benefit-icon" viewBox="0 0 24 24" fill="#C8B39B" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            <path fill="white" d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/>
+                        </svg>
+                    </div>
+                    <h3>Reduce el Estrés</h3>
+                    <p>Conecta con tu respiración y encuentra calma mental mientras te concentras en movimientos precisos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido de Clases -->
+    <section id="Clases" class="classes-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestras Clases</h2>
+                <div class="divider"></div>
+                <p class="subtitle">Ofrecemos una variedad de clases para todos los niveles, desde principiantes hasta avanzados.</p>
+            </div>
+
+            <div class="classes-cards-grid">
+                <!-- Clase 1 -->
+                <div class="classes-card">
+                    <div class="classes-image-container">
+                        <img src="{% static 'img/clases_cadillac.webp' %}" alt="Imagen de Pilates" class="classes-img-card">
+                    </div>
+                    <div class="classes-card-content">
+                        <h3>Cadillac</h3>
+                        <p>
+                            Es una clase diseñada para fortalecer y estirar el cuerpo con mayor control y soporte, 
+                            ideal para rehabilitación y ejercicios avanzados.
+                        </p>
+                        <div class="card-footer">
+                            <span>50 minutos</span>
+                            <button class="btn-reservar">Reservar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clase 2 -->
+                <div class="classes-card">
+                    <div class="classes-image-container">
+                        <img src="{% static 'img/clases_reformer.webp' %}" alt="Imagen de Pilates" class="classes-img-card">
+                    </div>
+                    <div class="classes-card-content">
+                        <h3>Pilates Reformer / Terapéutico / Prenatal / Deportivo</h3>
+                        <p>Sesiones personalizadas enfocadas en rehabilitación y corrección postural.</p>
+                        <div class="card-footer">
+                            <span>45 minutos</span>
+                            <button class="btn-reservar">Reservar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido de Instructores -->
+    <section id="Instructores" class="instructors-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestros Instructores</h2>
+                <div class="divider"></div>
+                <p class="subtitle">
+                    Conoce a nuestro equipo de profesionales certificados que te guiarán en tu práctica de Pilates.
+                </p>
+            </div>
+
+            <div class="instructors-grid">
+                <!-- Instructor 1 -->
+                <div class="card_instructors">
+                    <div class="image_instructors_container">
+                        <img src="{% static 'img/cami.webp' %}" alt="Instructora Cami">
+                    </div>
+                    <div class="instructors-card-content">
+                        <h3>Cami</h3>
+                        <p class="cargo">+3 años de experiencia</p>
+                        <p>Motivadora, paciente, empática, perseverante y siempre atenta.<br>
+                            Hace 8 años que practica el método, y desde hace 3 lo transmite como instructora.<br>
+                            Además, es profe de danza desde los 17 años. Su pasión por el movimiento se nota en cada clase.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Instructor 2 -->
+                <div class="card_instructors">
+                    <div class="image_instructors_container">
+                        <img src="{% static 'img/nico.webp' %}" alt="Instructor Nico">
+                    </div>
+                    <div class="instructors-card-content">
+                        <h3>Nico</h3>
+                        <p class="cargo">+5 años de experiencia</p>
+                        <p>Divertido, charlatan y siempre con la mejor energía.<br>
+                           Motivador, inspirador y un gran guía en cada clase.<br>
+                           con 5 años como instructor de pilates y 7 años de experiencia como profesor de educación física,
+                           sabe como acompañarte y hacerte disfrutar el proceso. 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido de Contacto -->
+    <section id="Contacto" class="contact-section">
+        <!-- Formulario, datos de contacto, mapa y suscripción (resumido aquí) -->
+        <div class="container">
+            <div class="section-title">
+                <h2>Contáctanos</h2>
+                <div class="divider"></div>
+                <p>¿Tienes alguna pregunta o quieres reservar una clase? Estamos aquí para ayudarte.</p>
+            </div>
+
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Información de Contacto</h3>
+                    <div class="contact-cards-container">
+                        <a href="https://www.google.com/maps/place/La+Rioja+3044,+S3000+Santa+Fe+de+la+Vera+Cruz,+Santa+Fe" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           style="text-decoration: none;"
+                        >
+                            <div class="contact-card">
+                                <img src="{% static 'icons/location.png' %}" alt="Icono de ubicación">
+                                <h4>Dirección</h4>
+                                <p>La Rioja 3044, Santa Fe Capital</p>
+                            </div>
+                        </a>
+                        <a href="#" 
+                           id="openChatFromPhone"
+                           style="text-decoration: none;"
+                        >
+                            <div class="contact-card">
+                                <img src="{% static 'icons/telefono.png' %}" alt="Icono de teléfono">
+                                <h4>Teléfono</h4>
+                                <p>+54 342 511 4448</p>
+                            </div>
+                        </a>
+                        <a href="mailto:gravity@gmail.com?subject=Consulta&body=Hola, quiero hacer una consulta sobre..." 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           style="text-decoration: none;"
+                        >
+                            <div class="contact-card">
+                                <img src="{% static 'icons/email.png' %}" alt="Icono de email">
+                                <h4>E-mail</h4>
+                                <p>gravity@gmail.com</p>
+                            </div>
+                        </a>
+                        <a href="https://www.instagram.com/pilatesgravity/" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+                            <div class="contact-card">
+                                <img src="{% static 'icons/instagram.png' %}" alt="Icono de email">
+                                <h4>Instagram</h4>
+                                <p>@pilatesgravity</p>
+                            </div>
+                        </a>
+                        <a href="#" id="open-schedule-modal" style="text-decoration: none;">
+                            <div class="contact-card">
+                                <img src="{% static 'icons/clock.png' %}" alt="Icono de horarios">
+                                <h4>Horarios</h4>
+                                <p>
+                                    Lunes a Viernes<br>
+                                    Sabados y Domingos Cerrados
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de horarios-->
+            <div id="schedule-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h3 style="text-align: center; color: #5D768B; font-weight: 900;">Horarios de Clases</h3>
+                    <p><strong>Turnos por la mañana:</strong></p>
+                    <ul>
+                        <li>07:00 - 08:00</li>
+                        <li>08:00 - 09:00</li>
+                        <li>09:00 - 10:00</li>
+                        <li>10:00 - 11:00</li>
+                    </ul>
+                    <p><strong>Turnos por la tarde:</strong></p>
+                    <ul>
+                        <li>13:30 - 14:30</li>
+                        <li>14:30 - 15:30</li>
+                        <li>15:30 - 16:30</li>
+                        <li>16:30 - 17:30</li>
+                        <li>17:30 - 18:30</li>
+                        <li>18:30 - 19:30</li>
+                        <li>19:30 - 20:30</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2124.077530150579!2d-60.71308093941145!3d-31.644436912417746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95b5a9b0f73ec06d%3A0xcd46785c2438f588!2sLa%20Rioja%203044%2C%20S3000%20Santa%20Fe%20de%20la%20Vera%20Cruz%2C%20Santa%20Fe!5e0!3m2!1ses-419!2sar!4v1747926163998!5m2!1ses-419!2sar" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido de Normas -->
+    <section id="Normas" class="norm-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Normas del Estudio</h2>
+                <div class="divider"></div>
+                <p>
+                    Por favor, lee atentamente nuestras normas para asegurar una experiencia agradable y 
+                    organizada para todos.
+                </p>
+            </div>
+            <ol class="rules-list">
+                <li>
+                    <h4>Cuotas y Pagos:</h4>
+                    <p>
+                        La cuota se abona del 1 al 10 de cada mes; en efectivo tiene un 10% de descuento solo dentro de 
+                        ese período, luego se paga precio de lista. La camilla se reserva únicamente abonando el mes completo.
+                        Si comenzás clases entre el día 1 y el 15, se abona el mes completo; si arrancas a partir del día 15;
+                        se abona medio mes.
+                    </p>
+                </li>
+                <li>
+                    <h4>Inicio de Clases:</h4>
+                    <p>
+                        Las clases empiezan en el horario pactado con 5 minutos de tolerancia y se debe llegar 5 minutos antes
+                        para no interrumpir la clase anterior.
+                    </p>
+                </li>
+                <li>
+                    <h4>Clases a Recuperar:</h4>
+                    <p>
+                        Se pueden recuperar hasta 2 clases por mes avisando con anticipación y según disponibilidad; los 
+                        feriados nacionales no se recuperan.
+                    </p>
+                </li>
+                <li>
+                    <h4>Otras Consideraciones:</h4>
+                    <ul>
+                        <li>Avisar si vas a faltar para una mejor organización del espacio.</li>
+                        <li>Mantener la higiene personal.</li>
+                        <li>Avisar con anticipación si no vas a continuar el mes siguiente.</li>
+                        <li>Si faltas 2 veces sin aviso previo a principio de mes, se considera que dejaste tu lugar.</li>
+                    </ul>
+                </li>
+            </ol>
+    </section>
+
+    <!-- Contenido de Preguntas Frecuentes -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Preguntas Frecuentes</h2>
+                <div class="divider"></div>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Necesito experiencia previa para practicar Pilates?</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            No, no necesitas experiencia previa. Nuestras clases están diseñadas para todos los niveles, 
+                            desde principiantes hasta avanzados. Nuestros instructores te guiarán paso a paso y adaptarán 
+                            los ejercicios según tu nivel de condición física.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Qué debo llevar a mi primera clase?</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            Te recomendamos usar ropa cómoda que te permita moverte libremente. 
+                            Medias antideslizantes son recomendables para las clases de reformer. 
+                            Nosotros proporcionamos todo el equipo necesario, solo necesitas traer una botella de agua 
+                            y una toalla pequeña.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Con qué frecuencia debo practicar Pilates?</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            Para ver resultados, recomendamos practicar Pilates de 2 a 3 veces por semana. 
+                            Sin embargo, incluso una clase semanal puede proporcionar beneficios.
+                            Lo más importante es la consistencia y escuchar a tu cuerpo.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Puedo practicar Pilates si tengo una lesión?</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            Pilates es excelente para rehabilitación, pero es importante consultar primero con tu médico. 
+                            Infórmanos sobre cualquier lesión o condición médica para que nuestros instructores puedan 
+                            adaptar los ejercicios a tus necesidades específicas. Ofrecemos clases de Pilates terapéutico 
+                            especialmente diseñadas para personas en recuperación.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Cómo puedo reservar una clase?</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            Puedes reservar clases a través de nuestra página web, por teléfono o directamente en 
+                            nuestro estudio. Recomendamos reservar con anticipación, especialmente para las clases 
+                            de reformer, ya que los espacios son limitados. También ofrecemos paquetes de clases 
+                            con descuentos para miembros frecuentes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Script para manejar funcionalidades -->
+    <script>
+
+        // Script para las imagenes de la section 'Nosotros'
+        document.addEventListener('DOMContentLoaded', () => {
+            const carousel = document.querySelector('.carousel');
+            if (!carousel) return;
+
+            const count = carousel.querySelectorAll('.img-stacked').length;
+            let idx = 0;
+
+            // Siempre partimos mostrando la 1ª
+            carousel.scrollTo({ left: 0, behavior: 'auto' });
+
+            setInterval(() => {
+                idx = (idx + 1) % count;
+                carousel.scrollTo({
+                    left: idx * carousel.clientWidth,
+                    behavior: 'smooth'
+                });
+            }, 2000);
+        });
+
+        // Script para el modal de horarios
+        const openModal = document.getElementById('open-schedule-modal');
+        const modal = document.getElementById('schedule-modal');
+        const closeModal = modal.querySelector('.close-modal');
+
+        openModal.addEventListener('click', function (e) {
+            e.preventDefault();
+            modal.style.display = 'block';
+        });
+
+        closeModal.addEventListener('click', function () {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Script para las preguntas frecuentes (FAQ)
+        document.querySelectorAll(".faq-question").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const answer = btn.nextElementSibling;
+                answer.classList.toggle("show");
+                btn.querySelector("svg").classList.toggle("rotate");
+            });
+        });
+
+    </script>
+
+
 {% endblock %}

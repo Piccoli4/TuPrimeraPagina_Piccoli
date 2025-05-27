@@ -1,0 +1,153 @@
+.site-footer {
+    background-color: #5D768B;
+    color: white;
+    padding: 1rem 0;
+}
+
+.footer-container {
+    padding: 0 1rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+}
+
+.footer-brand-logo {
+    width: 250px;
+    height: auto;
+}
+
+.footer-description {
+    color: #D1D5DB;
+    margin-bottom: 1rem;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-list li {
+    margin-bottom: 0.5rem;
+    color: #D1D5DB;
+    display: flex;
+    align-items: flex-start;
+}
+
+.footer-list li a {
+    color: #D1D5DB;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-list li a:hover {
+    color: white;
+}
+
+.footer-classes {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}  
+
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-bottom {
+    border-top: 1px solid #4B5563;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: #9CA3AF;
+}
+
+.footer-legal {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-legal a {
+    color: #9CA3AF;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-legal a:hover {
+    color: white;
+}
+
+@media (min-width: 768px) {
+    .footer-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-brand {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-brand-logo {
+        width: 180px;
+    }
+
+    .footer-description {
+        margin-bottom: 0;
+    }
+    
+    .footer-links {
+        align-items: center;
+    }
+
+    .footer-heading {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .footer-list li {
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.25rem;
+    }
+    
+    .footer-classes, .footer-contact {
+        align-items: center;
+    }
+
+    .footer-bottom {
+        margin-bottom: 60px;
+    }
+}

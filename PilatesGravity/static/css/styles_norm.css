@@ -1,0 +1,9 @@
+.norm-section {
+    background-color: #F8EFE5;
+    padding: 70px 20px;
+    position: relative;
+}
+
+.rules-list li::marker {
+  font-weight: bold;
+}

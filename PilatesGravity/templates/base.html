@@ -2,157 +2,244 @@
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Pilates Gravity</title>
-    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --principal: #5D768B;
-            --secundario: #C8B39B;
-            --fondo: #F8EFE5;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <title>Pilates Gravity</title>
+        <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/styles_base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_hero.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_about.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_benefits.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_classes.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_instructors.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_contact.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_norm.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_faq.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_footer.css' %}">
+    </head>
+    <body>
 
-        * {
-            box-sizing: border-box;
-        }
+        <header>
+            <div class="logo" style="flex: 0 0 140px;">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'img/solo_logo_blanco.webp' %}" alt="Logo Pilates Gravity" style="width: 85px; height: auto;">
+                </a>
+            </div>
+            <div class="header-content">
+                <h1>Pilates Gravity</h1>
+                <nav>
+                    <ul>
+                        <li><a href="{% url 'home' %}">Inicio</a></li>
+                        <li><a href="{% url 'home' %}#Nosotros">Nosotros</a></li>
+                        <li><a href="{% url 'home' %}#Beneficios">Beneficios</a></li>
+                        <li><a href="{% url 'home' %}#Clases">Clases</a></li>
+                        <li><a href="{% url 'home' %}#Instructores">Instructores</a></li>
+                        <li><a href="{% url 'home' %}#Contacto">Contacto</a></li>
+                        <li><a href="{% url 'home' %}#Normas">Normas</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div style="flex: 0 0 140px;">
+                <button class="menu-toggle" id="menuToggle">&#9776;</button>
+            </div>
+        </header>
 
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--fondo);
-            color: #333;
-        }
+        <main>
+            {% block content %}{% endblock %}
+        </main>
 
-        header {
-            background-color: var(--principal);
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
+        <footer class="site-footer">
+            <div class="footer-container">
+                <div class="footer-grid">
+                    <!-- Brand -->
+                    <div>
+                        <div class="footer-brand">
+                            <img src="{% static 'img/logo_gravity.webp' %}" alt="Logo Pilates Gravity" class="footer-brand-logo">
+                        </div>
+                        <p class="footer-description">
+                            Transforma tu cuerpo, equilibra tu mente y eleva tu bienestar con nuestro método único de Pilates.
+                        </p>
+                    </div>
 
-        header .logo {
-            text-align: left;
-            padding-left: 20px;
-        }
+                    <!-- Links -->
+                    <div class="footer-links">
+                        <h3 class="footer-heading">Enlaces rápidos</h3>
+                        <ul class="footer-list">
+                            <li><a href="{% url 'home' %}">Inicio</a></li>
+                            <li><a href="{% url 'home' %}#Nosotros">Nosotros</a></li>
+                            <li><a href="{% url 'home' %}#Beneficios">Beneficios</a></li>
+                            <li><a href="{% url 'home' %}#Clases">Clases</a></li>
+                            <li><a href="{% url 'home' %}#Instructores">Instructores</a></li>
+                            <li><a href="{% url 'home' %}#Contacto">Contacto</a></li>
+                            <li><a href="{% url 'home' %}#Normas">Normas</a></li>
+                        </ul>
+                    </div>
 
-        header .header-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
+                    <!-- Clases -->
+                    <div class="footer-classes">
+                        <h3 class="footer-heading">Clases</h3>
+                        <ul class="footer-list">
+                            <li><a href="#">Cadillac</a></li>
+                            <li><a href="#">Pilates Reformer</a></li>
+                            <li><a href="#">Pilates Terapéutico</a></li>
+                            <li><a href="#">Pilates Prenatal</a></li>
+                            <li><a href="#">Pilates para Deportistas</a></li>
+                        </ul>
+                    </div>
 
-        header h1 {
-            margin: 0;
-            font-size: 3rem;
-        }
+                    <!-- Contacto -->
+                    <div class="footer-contact">
+                        <h3 class="footer-heading">Contacto</h3>
+                        <ul class="footer-list">
+                            <li>La Rioja 3044, Santa Fe Capital</li>
+                            <li>+54 342 511 4448</li>
+                            <li>gravity@gmail.com</li>
+                            <li>@pilatesgravity</li>
+                        </ul>
+                    </div>
+                </div>
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 15px 0 0;
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
+                <!-- Footer bottom -->
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Pilates Gravity. Todos los derechos reservados.</p>
+                    <div class="footer-legal">
+                        <a href="#">Términos y Condiciones</a>
+                        <a href="{% url 'politica_privacidad' %}">Política de Privacidad</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
 
-        nav ul li {
-            display: inline;
-        }
+        <!-- Botón flotante de WhatsApp -->
+        <div class="whatsapp-chat-wrapper">
+            <!-- Botón de apertura -->
+            <div class="whatsapp-button" id="openChat">
+                <img src="{% static 'icons/whatsapp.png' %}" alt="WhatsApp">
+                <span class="whatsapp-notification" id="whatsappNotification">1</span>
+            </div>
 
-        nav ul li a {
-            text-decoration: none;
-            color: white;
-            font-weight: 500;
-            padding: 8px 14px;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        main {
-            max-width: 900px;
-            margin: 40px auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 0.9rem;
-            margin-top: 40px;
-        }
-
-        button {
-            background-color: var(--secundario);
-            color: #fff;
-            border: none;
-            padding: 10px 18px;
-            font-size: 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #b99f85;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-
-        h2 {
-            color: var(--principal);
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <img src="{% static 'logo_blanco.png' %}" alt="Logo Pilates Gravity" style="width: 120px; height: auto;">
+            <!-- Ventana de chat -->
+            <div class="whatsapp-chat-box" id="chatBox">
+                <div class="chat-header">
+                    <img src="{% static 'img/solo_logo_blanco.png' %}" alt="Logo Pilates Gravity" class="chat-user-logo">
+                    <div class="chat-brand">
+                        <strong>Pilates Gravity</strong>
+                        <span>Eleva tu bienestar con nuestro método de Pilates</span>
+                    </div>
+                    <button id="closeChat">&times;</button>
+                </div>
+                <div class="chat-messages">
+                    <div class="chat-bubble bot">
+                        👋 Hola, ¿cómo estás? 👋<br>
+                        ¿En qué podemos ayudarte?
+                    </div>
+                    <div class="chat-bubble user editable">
+                        <textarea id="whatsappMessage" placeholder="Escribe tu mensaje aquí..." rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="chat-actions-container">
+                    <a
+                        id="startWhatsapp"
+                        class="chat-action"
+                        target="_blank"
+                        href="https://wa.me/5493425114448?text=%C2%A1Hola!%20Quiero%20saber%20m%C3%A1s%20sobre%20Pilates%20Gravity"
+                    >
+                        Iniciar chat
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="header-content">
-            <h1>Pilates Gravity</h1>
-            <nav>
-                <ul>
-                    <li><a href="{% url 'home' %}">Inicio</a></li>
-                    <li><a href="{% url 'crear_cliente' %}">Nuevo Cliente</a></li>
-                    <li><a href="{% url 'crear_clase' %}">Nueva Clase</a></li>
-                    <li><a href="{% url 'crear_turno' %}">Nuevo Turno</a></li>
-                    <li><a href="{% url 'buscar_turno' %}">Buscar Turno</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+        <!-- Script para el menu responsive -->
+        <!-- Script para manejar el icono de whatsapp y su chat -->
+        <script>
+            // Muestra el menu
+            document.getElementById('menuToggle').addEventListener('click', function () {
+                document.querySelector('nav ul').classList.toggle('show');
+            });
 
-    <footer>
-        <p>&copy; 2025 - Pilates Gravity</p>
-    </footer>
-</body>
+            // Cierra el menú al hacer clic en cualquier ítem del nav en pantallas menores a 768px
+            document.querySelectorAll('nav ul li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        document.querySelector('nav ul').classList.remove('show');
+                    }
+                });
+            });
+
+            // Muestra el chat al hacer clic en el botón de WhatsApp o en la card de teléfono en la section de contacto
+            function openChatBox() {
+                document.getElementById('chatBox').style.display = 'block';
+                document.getElementById('openChat').style.display = 'none';
+
+                // Oculta la notificación si existe
+                const notif = document.getElementById('whatsappNotification');
+                if (notif) notif.style.display = 'none';
+
+                // Opcional: enfocar el textarea
+                document.getElementById('whatsappMessage').focus();
+            }
+
+            document.getElementById('openChat').addEventListener('click', openChatBox);
+            document.getElementById('openChatFromPhone').addEventListener('click', function (e) {
+                e.preventDefault();
+                openChatBox();
+            });
+
+            // Muestra una notificación tras 3 segundos
+            setTimeout(() => {
+                const notif = document.getElementById('whatsappNotification');
+                if (notif) {
+                    notif.style.display = 'flex';
+                }
+            }, 3000);
+
+            // Función para cerrar el chat
+            function closeChatBox() {
+                document.getElementById('chatBox').style.display = 'none';
+                document.getElementById('openChat').style.display = 'flex';
+            }
+
+            // Cierra el chat al hacer clic en el botón de cerrar
+            document.getElementById('closeChat').addEventListener('click', function () {
+                closeChatBox();
+            });
+
+            // Cierra el chat al hacer clic fuera de él
+            document.addEventListener('click', function (e) {
+                const chatBox = document.getElementById('chatBox');
+                const openChatButton = document.getElementById('openChat');
+                const openChatPhone = document.getElementById('openChatFromPhone');
+
+                if (
+                    chatBox.style.display === 'block' &&
+                    !chatBox.contains(e.target) &&
+                    !openChatButton.contains(e.target) &&
+                    !openChatPhone.contains(e.target)
+                ) {
+                    closeChatBox();
+                }
+            });
+
+            // Envía el mensaje de WhatsApp al hacer clic en "Iniciar chat"
+            document.getElementById('startWhatsapp').addEventListener('click', function (e) {
+                const message = document.getElementById('whatsappMessage').value.trim();
+                if (message !== '') {
+                    const phoneNumber = '5493425114448';
+                    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                    window.open(whatsappURL, '_blank');
+
+                     // Cierra el chat y limpia el mensaje
+                    document.getElementById('chatBox').style.display = 'none';
+                    document.getElementById('openChat').style.display = 'flex';
+                    document.getElementById('whatsappMessage').value = '';
+                } else {
+                    alert('Por favor escribí un mensaje antes de enviar.');
+                }
+            });
+        </script>
+    </body>
 </html>

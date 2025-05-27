@@ -1,0 +1,371 @@
+:root {
+    --principal: #5D768B;
+    --secundario: #C8B39B;
+    --fondo: #F8EFE5;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Cinzel", serif;
+    background-color: var(--fondo);
+    color: #333;
+    overflow-x: hidden;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--principal);
+    color: white;
+    padding: 5px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header .logo {
+    text-align: left;
+    padding-left: 5px;
+}
+
+header .header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+button {
+    background-color: var(--secundario);
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+h2 {
+    color: var(--principal);
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* Estilo responsive pantallas menores a 480px */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    nav ul li a {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    button {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    input, select, textarea {
+        font-size: 0.9rem;
+    }
+}
+
+/* Estilo responsive pantallas menores a 768px */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: inline-block;
+    }
+
+    nav ul {
+        display: none;
+        flex-direction: column;
+        background-color: var(--principal);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 10px 0;
+        z-index: 999;
+    }
+
+    nav ul.show {
+        display: flex;
+    }
+
+    .header-content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Estilo responsive pantallas menores a 1024px */
+@media (max-width: 1024px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    nav ul {
+        gap: 7px;
+    }
+
+    nav ul li a {
+        padding: 5px 3px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Estilo responsive pantallas mayores a 1024px y menores a 1280px */
+@media (min-width: 1024px) and (max-width: 1280px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    nav ul {
+        gap: 10px;
+    }
+
+    nav ul li a {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+}
+
+.whatsapp-chat-wrapper {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9999;
+    font-family: sans-serif;
+}
+
+.whatsapp-button {
+    position: relative;
+    background-color: var(--principal);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    box-shadow: 2px 2px 10px #000000bc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.whatsapp-button img {
+    width: 56px;
+    height: 56px;
+}
+
+.whatsapp-button:hover {
+    transform: scale(1.10);
+    transition: transform 0.3s ease;
+}
+
+.whatsapp-chat-box {
+    display: none;
+    width: 360px;
+    background: #FDFDFD;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    animation: fadeInUp 0.3s ease-in-out;
+}
+
+.chat-header {
+    background-color: var(--principal);
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.chat-user-logo {
+    width: 60px;
+    height: 60px;
+    padding: 2px;
+    border-radius: 50%;
+    margin-right: 15px;
+    background-color: #000;
+}
+
+.chat-brand {
+    font-size: 14px;
+}
+
+.chat-brand strong {
+    display: block;
+    font-size: 16px;
+}
+
+.chat-header button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.chat-messages {
+    background: #ece5dd;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-bubble {
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    max-width: 80%;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.chat-bubble.bot {
+    align-self: flex-start;
+    background: #fff;
+}
+
+.chat-bubble.user {
+    align-self: flex-end;
+    background: var(--secundario);
+}
+
+
+.chat-bubble.user.editable textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    background: var(--secundario);
+    font-family: inherit;
+    font-size: 14px;
+    padding: 5px;
+    outline: none;
+    border-radius: 8px;
+}
+
+.chat-actions-container {
+    background-color: var(--principal);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+
+.chat-action {
+    background-color: var(--secundario);
+    width: 75%;
+    text-align: center;
+    color: white;
+    padding: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    gap: 10px;
+    border-top: 1px solid #ccc;
+    border-radius: 15px;
+}
+
+.whatsapp-notification {
+    position: absolute;
+    top: -2px;
+    right: 2px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    display: none; /* Oculto por defecto */
+    z-index: 10000;
+}
+
+
+@keyframes fadeInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
