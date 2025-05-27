@@ -9,4 +9,5 @@ urlpatterns = [
     path('crear_turno/', crear_turno, name='crear_turno'),
     path('buscar_turno/', buscar_turno, name='buscar_turno'),
     path('politica-de-privacidad/', TemplateView.as_view(template_name='PilatesGravity/politica_privacidad.html'), name='politica_privacidad'),
+    path('terminos_condiciones/', TemplateView.as_view(template_name='PilatesGravity/terminos_condiciones.html'), name='terminos_condiciones'),
 ]
