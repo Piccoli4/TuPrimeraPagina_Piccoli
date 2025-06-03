@@ -74,6 +74,7 @@
   border: none;
   border-radius: 999px;
   font-size: 0.9rem;
+  text-decoration: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }

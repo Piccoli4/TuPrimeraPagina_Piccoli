@@ -22,8 +22,8 @@
                 <h1>Descubre <br><span>Pilates Gravity</span></h1>
                 <p>Transforma tu cuerpo, equilibra tu mente y eleva tu bienestar con nuestro método único de Pilates.</p>
                 <div class="hero-buttons">
-                    <a href="" class="btn btn-primary">Reserva tu clase</a>
-                    <a href="" class="btn btn-secondary">Conoce más</a>
+                    <a href="{% url 'reservar_clase' %}" class="btn btn-primary">Reserva tu clase</a>
+                    <a href="{% url 'conoce_mas' %}" class="btn btn-secondary">Conoce más</a>
                 </div>
             </div>
             <div class="hero-image">
@@ -142,7 +142,7 @@
                         </p>
                         <div class="card-footer">
                             <span>50 minutos</span>
-                            <button class="btn-reservar">Reservar</button>
+                            <a href="{% url 'reservar_clase' %}?tipo=Cadillac" class="btn-reservar">Reservar</a>
                         </div>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                         <p>Sesiones personalizadas enfocadas en rehabilitación y corrección postural.</p>
                         <div class="card-footer">
                             <span>45 minutos</span>
-                            <button class="btn-reservar">Reservar</button>
+                            <a href="{% url 'reservar_clase' %}?tipo=Reformer" class="btn-reservar">Reservar</a>
                         </div>
                     </div>
                 </div>

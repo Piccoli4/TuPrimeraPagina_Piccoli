@@ -17,16 +17,18 @@
 .footer-brand {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .footer-brand-logo {
-    width: 250px;
+    width: 280px;
     height: auto;
 }
 
 .footer-description {
     color: #D1D5DB;
     margin-bottom: 1rem;
+    text-align: center;
 }
 
 .footer-links {
@@ -105,7 +107,7 @@
 
 @media (min-width: 768px) {
     .footer-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 

@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="{% static 'css/styles_norm.css' %}">
         <link rel="stylesheet" href="{% static 'css/styles_faq.css' %}">
         <link rel="stylesheet" href="{% static 'css/styles_footer.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_reservar_turno.css' %}">
     </head>
     <body>
 
@@ -64,20 +65,6 @@
                         </p>
                     </div>
 
-                    <!-- Links -->
-                    <div class="footer-links">
-                        <h3 class="footer-heading">Enlaces rápidos</h3>
-                        <ul class="footer-list">
-                            <li><a href="{% url 'home' %}">Inicio</a></li>
-                            <li><a href="{% url 'home' %}#Nosotros">Nosotros</a></li>
-                            <li><a href="{% url 'home' %}#Beneficios">Beneficios</a></li>
-                            <li><a href="{% url 'home' %}#Clases">Clases</a></li>
-                            <li><a href="{% url 'home' %}#Instructores">Instructores</a></li>
-                            <li><a href="{% url 'home' %}#Contacto">Contacto</a></li>
-                            <li><a href="{% url 'home' %}#Normas">Normas</a></li>
-                        </ul>
-                    </div>
-
                     <!-- Clases -->
                     <div class="footer-classes">
                         <h3 class="footer-heading">Clases</h3>
@@ -97,7 +84,16 @@
                             <li>La Rioja 3044, Santa Fe Capital</li>
                             <li>+54 342 511 4448</li>
                             <li>gravity@gmail.com</li>
-                            <li>@pilatesgravity</li>
+                            <li>
+                                <a 
+                                    href="https://www.instagram.com/pilatesgravity/" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    style="text-decoration: none;"
+                                >
+                                    @PilatesGravity
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
