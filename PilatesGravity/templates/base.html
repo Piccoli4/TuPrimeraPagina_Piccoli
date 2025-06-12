@@ -19,13 +19,18 @@
         <link rel="stylesheet" href="{% static 'css/styles_norm.css' %}">
         <link rel="stylesheet" href="{% static 'css/styles_faq.css' %}">
         <link rel="stylesheet" href="{% static 'css/styles_footer.css' %}">
-        <link rel="stylesheet" href="{% static 'css/styles_reservar_turno.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_reservar_clase.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_animations.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles_scroll_animation.css' %}">
+        <link rel="stylesheet" href="{% static 'css/accounts_profile.css' %}">
+        <link rel="stylesheet" href="{% static 'css/accounts_profile_complete.css' %}">
+        <link rel="stylesheet" href="{% static 'css/accounts_change_password.css' %}">
     </head>
     <body>
 
         <header>
             <div class="logo" style="flex: 0 0 140px;">
-                <a href="{% url 'home' %}">
+                <a href="{% url 'PilatesGravity:home' %}">
                     <img src="{% static 'img/solo_logo_blanco.webp' %}" alt="Logo Pilates Gravity" style="width: 85px; height: auto;">
                 </a>
             </div>
@@ -33,17 +38,58 @@
                 <h1>Pilates Gravity</h1>
                 <nav>
                     <ul>
-                        <li><a href="{% url 'home' %}">Inicio</a></li>
-                        <li><a href="{% url 'home' %}#Nosotros">Nosotros</a></li>
-                        <li><a href="{% url 'home' %}#Beneficios">Beneficios</a></li>
-                        <li><a href="{% url 'home' %}#Clases">Clases</a></li>
-                        <li><a href="{% url 'home' %}#Instructores">Instructores</a></li>
-                        <li><a href="{% url 'home' %}#Contacto">Contacto</a></li>
-                        <li><a href="{% url 'home' %}#Normas">Normas</a></li>
+                        <li><a href="{% url 'PilatesGravity:home' %}">Inicio</a></li>
+                        <li><a href="{% url 'PilatesGravity:home' %}#Nosotros">Nosotros</a></li>
+                        <li><a href="{% url 'PilatesGravity:home' %}#Beneficios">Beneficios</a></li>
+                        <li><a href="{% url 'PilatesGravity:home' %}#Clases">Clases</a></li>
+                        <li><a href="{% url 'PilatesGravity:home' %}#Instructores">Instructores</a></li>
+                        <li><a href="{% url 'PilatesGravity:home' %}#Contacto">Contacto</a></li>
+                        <li><a href="{% url 'PilatesGravity:home' %}#Normas">Normas</a></li>
+
+                        <!-- Botones de autenticación para móviles (solo visibles en pantallas < 768px) -->
+                        {% if user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'accounts:profile' %}" class="auth-item">
+                                    <img src="{% static 'icons/profile.png' %}" alt="Perfil" class="auth-icon">
+                                    <p class="auth-text">Hola, {{ user.first_name|default:user.username }}</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'accounts:logout' %}" class="auth-item">
+                                    <img src="{% static 'icons/logout.png' %}" alt="Cerrar Sesión" class="auth-icon">
+                                    <span class="auth-text">Cerrar Sesión</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'accounts:login' %}" class="auth-item">
+                                    <img src="{% static 'icons/login.png' %}" alt="Iniciar Sesión" class="auth-icon">
+                                    <span class="auth-text">Iniciar Sesión</span>
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
-            <div style="flex: 0 0 140px;">
+            <div class="menu-toggle-container" style="flex: 0 0 140px;">
+                <!-- Botones de autenticación para desktop (solo visibles en pantallas >= 768px) -->
+                {% if user.is_authenticated %}
+                    <div class="auth-buttons">
+                        <a href="{% url 'accounts:profile' %}" class="auth-greeting">
+                            <img src="{% static 'icons/profile.png' %}" alt="Perfil" class="auth-icon">
+                            <p class="auth-text">Hola, {{ user.first_name|default:user.username }}</p>
+                        </a>
+                        <a href="{% url 'accounts:logout' %}" class="auth-item">
+                            <img src="{% static 'icons/logout.png' %}" alt="Cerrar Sesión" class="auth-icon">
+                            <p class="auth-text">Cerrar Sesión</p>
+                        </a>
+                    </div>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="auth-item">
+                        <img src="{% static 'icons/login.png' %}" alt="Iniciar Sesión" class="auth-icon">
+                        <p class="auth-text">Iniciar Sesión</p>
+                    </a>
+                {% endif %}
                 <button class="menu-toggle" id="menuToggle">&#9776;</button>
             </div>
         </header>
@@ -69,11 +115,11 @@
                     <div class="footer-classes">
                         <h3 class="footer-heading">Clases</h3>
                         <ul class="footer-list">
-                            <li><a href="#">Cadillac</a></li>
-                            <li><a href="#">Pilates Reformer</a></li>
-                            <li><a href="#">Pilates Terapéutico</a></li>
-                            <li><a href="#">Pilates Prenatal</a></li>
-                            <li><a href="#">Pilates para Deportistas</a></li>
+                            <li>Cadillac</li>
+                            <li>Pilates Reformer</li>
+                            <li>Pilates Terapéutico</li>
+                            <li>Pilates Prenatal</li>
+                            <li>Pilates para Deportistas</li>
                         </ul>
                     </div>
 
@@ -83,7 +129,7 @@
                         <ul class="footer-list">
                             <li>La Rioja 3044, Santa Fe Capital</li>
                             <li>+54 342 511 4448</li>
-                            <li>gravity@gmail.com</li>
+                            <li>pilatesgravity@gmail.com</li>
                             <li>
                                 <a 
                                     href="https://www.instagram.com/pilatesgravity/" 
@@ -102,8 +148,8 @@
                 <div class="footer-bottom">
                     <p>&copy; 2025 Pilates Gravity. Todos los derechos reservados.</p>
                     <div class="footer-legal">
-                        <a href="{% url 'terminos_condiciones' %}">Términos y Condiciones</a>
-                        <a href="{% url 'politica_privacidad' %}">Política de Privacidad</a>
+                        <a href="{% url 'PilatesGravity:terminos_condiciones' %}">Términos y Condiciones</a>
+                        <a href="{% url 'PilatesGravity:politica_privacidad' %}">Política de Privacidad</a>
                     </div>
                 </div>
             </div>
@@ -180,10 +226,15 @@
             }
 
             document.getElementById('openChat').addEventListener('click', openChatBox);
-            document.getElementById('openChatFromPhone').addEventListener('click', function (e) {
-                e.preventDefault();
-                openChatBox();
-            });
+            
+            // Verificar si existe el elemento antes de agregar el event listener
+            const openChatFromPhone = document.getElementById('openChatFromPhone');
+            if (openChatFromPhone) {
+                openChatFromPhone.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    openChatBox();
+                });
+            }
 
             // Muestra una notificación tras 3 segundos
             setTimeout(() => {
@@ -214,7 +265,7 @@
                     chatBox.style.display === 'block' &&
                     !chatBox.contains(e.target) &&
                     !openChatButton.contains(e.target) &&
-                    !openChatPhone.contains(e.target)
+                    (!openChatPhone || !openChatPhone.contains(e.target))
                 ) {
                     closeChatBox();
                 }
@@ -236,6 +287,19 @@
                     alert('Por favor escribí un mensaje antes de enviar.');
                 }
             });
+
+            // Confirmación antes de cerrar sesión
+            document.addEventListener('DOMContentLoaded', function() {
+                const logoutBtn = document.querySelector('.logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(e) {
+                        if (!confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                            e.preventDefault();
+                        }
+                    });
+                }
+            });
         </script>
+        <script src="{% static 'js/hero_animations.js' %}"></script>
     </body>
 </html>

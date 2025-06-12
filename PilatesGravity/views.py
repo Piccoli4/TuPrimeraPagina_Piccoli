@@ -1,212 +1,236 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from .models import Cliente, Reserva, Clase
-from .forms import ClienteForm, ReservaForm, BuscarReservaForm, ConfirmarReservaForm, CambiarReservaForm
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt
+from .models import Reserva, Clase
+from .forms import ReservaForm, ModificarReservaForm, EliminarReservaForm, BuscarReservaForm
 import json
+from accounts.models import UserProfile
 
-# Página de inicio
+
+# Página de inicio (pública)
 def home(request):
+    """Vista pública de la página principal"""
     return render(request, 'PilatesGravity/home.html')
 
-# Vista para reservar una clase (reserva recurrente)
+
+# Vista para reservar una clase (solo usuarios autenticados)
+@login_required
 def reservar_clase(request):
-
-    # Obtener el tipo de clase desde la URL (si existe)
-    tipo_preseleccionado = request.GET.get('tipo', '')
-
+    """
+    Permite a un usuario autenticado crear una nueva reserva.
+    Utiliza ReservaForm que ya tiene todas las validaciones necesarias.
+    """
     if request.method == 'POST':
-        cliente_form = ClienteForm(request.POST)
-        reserva_form = ReservaForm(request.POST)
-
-        if cliente_form.is_valid() and reserva_form.is_valid():
+        form = ReservaForm(request.POST, user=request.user)
+        
+        if form.is_valid():
             try:
-                # Primero guardamos el cliente
-                cliente = cliente_form.save()
+                # El formulario ya validó todo y nos devuelve la clase en cleaned_data
+                clase = form.cleaned_data['clase']
                 
-                # Obtenemos la clase seleccionada del formulario validado
-                clase = reserva_form.cleaned_data['clase']
+                # Crear la reserva
+                reserva = Reserva.objects.create(
+                    usuario=request.user,
+                    clase=clase
+                )
                 
-                # Verificamos una vez más que la clase tenga cupo (por seguridad)
-                if clase.esta_completa():
-                    messages.error(request, 
-                        f'Lo sentimos, la clase de {clase.tipo} los {clase.dia} a las {clase.horario.strftime("%H:%M")} '
-                        'se completó mientras procesábamos tu reserva. Por favor selecciona otra clase.')
-                    
-                    # Reiniciamos los formularios para que el usuario pueda intentar de nuevo
-                    cliente_form = ClienteForm()
-                    reserva_form = ReservaForm(initial={'tipo_clase': tipo_preseleccionado} if tipo_preseleccionado else None)
-                else:
-                    # Creamos la reserva
-                    reserva = Reserva.objects.create(cliente=cliente, clase=clase)
-                    
-                    messages.success(request, 
-                        f'¡Reserva exitosa! Tu número de reserva es {reserva.numero_reserva}. '
-                        f'Asistirás todos los {clase.dia} a las {clase.horario.strftime("%H:%M")} '
-                        f'a la clase de {clase.tipo}. '
-                        f'Recuerda tu código de verificación: es necesario para modificar o cancelar tu reserva.')
-                    
-                    return redirect('home')
-                    
+                messages.success(
+                    request,
+                    f'¡Reserva exitosa! Tu número de reserva es {reserva.numero_reserva}. '
+                    f'Asistirás todos los {clase.dia} a las {clase.horario.strftime("%H:%M")} '
+                    f'a la clase de {clase.get_tipo_display()}.'
+                )
+                
+                return redirect('PilatesGravity:home')
+                
             except IntegrityError:
-                # El cliente ya tiene una reserva para esta clase
-                messages.error(request, 
-                    'Ya tienes una reserva activa para esta clase. '
-                    'Si deseas cambiar de clase, primero cancela tu reserva actual.')
-
+                # Error de duplicado - no debería ocurrir por las validaciones del form
+                messages.error(
+                    request,
+                    'Error interno: Ya tienes una reserva para esta clase. '
+                    'Si esto persiste, contacta al administrador.'
+                )
     else:
-        cliente_form = ClienteForm()
-        # Si hay un tipo preseleccionado, inicializar el formulario con ese valor
+        # Permitir preseleccionar tipo de clase desde URL
+        tipo_preseleccionado = request.GET.get('tipo', '')
         initial_data = {'tipo_clase': tipo_preseleccionado} if tipo_preseleccionado else None
-        reserva_form = ReservaForm(initial=initial_data)
+        form = ReservaForm(user=request.user, initial=initial_data)
 
     return render(request, 'PilatesGravity/reservar_clase.html', {
-        'cliente_form': cliente_form,
-        'reserva_form': reserva_form,
-        'tipo_preseleccionado': tipo_preseleccionado  # Pasar al template para JavaScript
+        'form': form
     })
 
-# Vista para mostrar clases disponibles (informativa)
-def clases_disponibles(request):
-    clases = Clase.objects.all().order_by('dia', 'horario')
-    
-    clases_info = []
-    for clase in clases:
-        clases_info.append({
-            'clase': clase,
-            'cupos_disponibles': clase.cupos_disponibles(),
-            'esta_completa': clase.esta_completa(),
-            'porcentaje_ocupacion': round((clase.cupo_maximo - clase.cupos_disponibles()) / clase.cupo_maximo * 100)
-        })
-    
-    return render(request, 'PilatesGravity/clases_disponibles.html', {
-        'clases_info': clases_info
-    })
 
-# Vista para buscar reservas por cliente
-def buscar_reserva(request):
-    resultados = []
-    if request.method == 'POST':
-        form = BuscarReservaForm(request.POST)
-        if form.is_valid():
-            nombre = form.cleaned_data['nombre']
-            apellido = form.cleaned_data['apellido']
-            resultados = Reserva.objects.filter(
-                cliente__nombre__icontains=nombre,
-                cliente__apellido__icontains=apellido,
-                activa=True
-            ).select_related('cliente', 'clase')
-    else:
-        form = BuscarReservaForm()
+# Vista para modificar una reserva existente
+@login_required
+def modificar_reserva(request, numero_reserva):
+    """
+    Permite a un usuario modificar su propia reserva.
+    Utiliza ModificarReservaForm con todas las validaciones.
+    """
+    # Obtener la reserva y verificar que pertenece al usuario
+    reserva = get_object_or_404(
+        Reserva, 
+        numero_reserva=numero_reserva, 
+        usuario=request.user, 
+        activa=True
+    )
     
-    return render(request, 'PilatesGravity/buscar_reserva.html', {
-        'form': form,
-        'resultados': resultados
-    })
-
-# Vista para cancelar una reserva
-def cancelar_reserva(request, numero_reserva):
-    reserva = get_object_or_404(Reserva, numero_reserva=numero_reserva, activa=True)
-    
-    # Verificar si la reserva puede modificarse (usando la misma lógica que para cambios)
+    # Verificar si la reserva puede modificarse (12 horas de anticipación)
     puede_modificar, mensaje = reserva.puede_modificarse()
     
     if not puede_modificar:
-        messages.error(request, f'No puedes cancelar esta reserva: {mensaje}')
-        return redirect('detalle_reserva', numero_reserva=numero_reserva)
+        messages.error(request, f'No puedes modificar esta reserva: {mensaje}')
+        return redirect('PilatesGravity:detalle_reserva', numero_reserva=numero_reserva)
 
     if request.method == 'POST':
-        form = ConfirmarReservaForm(request.POST)
+        form = ModificarReservaForm(
+            request.POST, 
+            reserva_actual=reserva, 
+            user=request.user
+        )
+        
         if form.is_valid():
-            codigo_ingresado = form.cleaned_data['codigo_verificacion']
-            if codigo_ingresado == reserva.cliente.codigo_verificacion:
-                reserva.activa = False
+            try:
+                nueva_clase = form.cleaned_data['nueva_clase']
+                
+                # Actualizar la reserva
+                reserva.clase = nueva_clase
                 reserva.save()
                 
-                messages.success(request, 
-                    f'Tu reserva para la clase de {reserva.clase.tipo} los {reserva.clase.dia} '
-                    f'a las {reserva.clase.horario.strftime("%H:%M")} ha sido cancelada exitosamente.')
+                messages.success(
+                    request,
+                    f'¡Cambio exitoso! Tu reserva ahora es para la clase de '
+                    f'{nueva_clase.get_tipo_display()} los {nueva_clase.dia} '
+                    f'a las {nueva_clase.horario.strftime("%H:%M")}.'
+                )
                 
-                return redirect('home')
-            else:
-                form.add_error('codigo_verificacion', 'El código de verificación es incorrecto.')
+                return redirect('PilatesGravity:detalle_reserva', numero_reserva=numero_reserva)
+                
+            except IntegrityError:
+                messages.error(
+                    request,
+                    'Error interno: conflicto de reserva. '
+                    'Si esto persiste, contacta al administrador.'
+                )
     else:
-        form = ConfirmarReservaForm()
+        form = ModificarReservaForm(reserva_actual=reserva, user=request.user)
 
-    return render(request, 'PilatesGravity/cancelar_reserva.html', {
-        'reserva': reserva,
+    return render(request, 'PilatesGravity/modificar_reserva.html', {
         'form': form,
-        'puede_cancelar': puede_modificar,
+        'reserva': reserva,
+        'puede_modificar': puede_modificar,
         'mensaje_restriccion': mensaje if not puede_modificar else None
     })
 
-# Vista para cambiar una reserva
-def cambiar_reserva(request, numero_reserva):
-    reserva = get_object_or_404(Reserva, numero_reserva=numero_reserva, activa=True)
+
+# Vista para eliminar/cancelar una reserva
+@login_required
+def eliminar_reserva(request, numero_reserva):
+    """
+    Permite a un usuario cancelar su propia reserva.
+    Utiliza EliminarReservaForm con validación de confirmación.
+    """
+    # Obtener la reserva y verificar que pertenece al usuario
+    reserva = get_object_or_404(
+        Reserva, 
+        numero_reserva=numero_reserva, 
+        usuario=request.user, 
+        activa=True
+    )
     
-    # Verificar si la reserva puede modificarse
-    puede_modificar, mensaje = reserva.puede_modificarse()
+    # Verificar si la reserva puede modificarse (12 horas de anticipación)
+    puede_cancelar, mensaje = reserva.puede_modificarse()
     
-    if not puede_modificar:
-        messages.error(request, f'No puedes cambiar esta reserva: {mensaje}')
-        return redirect('detalle_reserva', numero_reserva=numero_reserva)
+    if not puede_cancelar:
+        messages.error(request, f'No puedes cancelar esta reserva: {mensaje}')
+        return redirect('PilatesGravity:detalle_reserva', numero_reserva=numero_reserva)
 
     if request.method == 'POST':
-        # Verificar código de verificación primero
-        codigo_ingresado = request.POST.get('codigo_verificacion', '')
-        if codigo_ingresado != reserva.cliente.codigo_verificacion:
-            messages.error(request, 'El código de verificación es incorrecto.')
-        else:
-            form = CambiarReservaForm(request.POST, reserva_actual=reserva)
-            if form.is_valid():
-                try:
-                    # Obtener la nueva clase
-                    nueva_clase = form.cleaned_data['nueva_clase']
-                    
-                    # Verificar una vez más que la nueva clase tenga cupo
-                    if nueva_clase.esta_completa():
-                        messages.error(request, 
-                            f'Lo sentimos, la clase de {nueva_clase.tipo} los {nueva_clase.dia} '
-                            f'a las {nueva_clase.horario.strftime("%H:%M")} se completó mientras procesábamos tu cambio. '
-                            'Por favor selecciona otra clase.')
-                    else:
-                        # Actualizar la reserva
-                        reserva.clase = nueva_clase
-                        reserva.save()
-                        
-                        messages.success(request, 
-                            f'¡Cambio exitoso! Tu reserva ahora es para la clase de {nueva_clase.tipo} '
-                            f'los {nueva_clase.dia} a las {nueva_clase.horario.strftime("%H:%M")}.')
-                        
-                        return redirect('detalle_reserva', numero_reserva=numero_reserva)
-                        
-                except IntegrityError:
-                    messages.error(request, 
-                        'Ya tienes una reserva activa para la clase seleccionada. '
-                        'Selecciona una clase diferente.')
-            else:
-                # Si el formulario no es válido, mostrar los errores
-                pass
+        form = EliminarReservaForm(
+            request.POST, 
+            reserva=reserva, 
+            user=request.user
+        )
+        
+        if form.is_valid():
+            # Cancelar la reserva
+            reserva.activa = False
+            reserva.save()
+            
+            messages.success(
+                request,
+                f'Tu reserva para la clase de {reserva.clase.get_tipo_display()} '
+                f'los {reserva.clase.dia} a las {reserva.clase.horario.strftime("%H:%M")} '
+                'ha sido cancelada exitosamente.'
+            )
+            
+            return redirect('PilatesGravity:home')
     else:
-        form = CambiarReservaForm(reserva_actual=reserva)
+        form = EliminarReservaForm(reserva=reserva, user=request.user)
 
-    return render(request, 'PilatesGravity/cambiar_reserva.html', {
-        'reserva': reserva,
+    return render(request, 'PilatesGravity/eliminar_reserva.html', {
         'form': form,
-        'puede_cambiar': puede_modificar,
-        'mensaje_restriccion': mensaje if not puede_modificar else None
+        'reserva': reserva,
+        'puede_cancelar': puede_cancelar,
+        'mensaje_restriccion': mensaje if not puede_cancelar else None
     })
 
-# Vista para el botón de "Conoce más"
-def conoce_mas(request):
-    return render(request, 'PilatesGravity/conoce_mas.html')
 
-# Vista para mostrar el detalle de una reserva
+# Vista para buscar reservas de usuario (pública)
+def buscar_reservas_usuario(request):
+    """
+    Permite buscar reservas por nombre de usuario.
+    Utiliza BuscarReservaForm para validar el usuario.
+    """
+    reservas_usuario = []
+    usuario_encontrado = None
+    
+    if request.method == 'POST':
+        form = BuscarReservaForm(request.POST)
+        
+        if form.is_valid():
+            # El formulario ya validó que el usuario existe
+            usuario_encontrado = form.cleaned_data.get('user')
+            
+            if usuario_encontrado:
+                # Obtener todas las reservas activas del usuario
+                reservas_usuario = Reserva.objects.filter(
+                    usuario=usuario_encontrado,
+                    activa=True
+                ).select_related('clase').order_by('clase__dia', 'clase__horario')
+    else:
+        form = BuscarReservaForm()
+
+    return render(request, 'PilatesGravity/buscar_reservas_usuario.html', {
+        'form': form,
+        'reservas_usuario': reservas_usuario,
+        'usuario_encontrado': usuario_encontrado
+    })
+
+# Vista para mostrar detalle de una reserva
 def detalle_reserva(request, numero_reserva):
+    """
+    Muestra el detalle de una reserva específica.
+    Solo el dueño de la reserva puede verla (o admin más adelante).
+    """
     reserva = get_object_or_404(Reserva, numero_reserva=numero_reserva, activa=True)
+    
+    # Verificar permisos: solo el dueño puede ver su reserva
+    if request.user.is_authenticated and request.user == reserva.usuario:
+        puede_ver = True
+        es_propietario = True
+    else:
+        # Para usuarios no autenticados o que no son dueños, no mostrar
+        puede_ver = False
+        es_propietario = False
+    
+    if not puede_ver:
+        messages.error(request, 'No tienes permisos para ver esta reserva.')
+        return redirect('PilatesGravity:home')
     
     # Obtener información sobre si puede modificarse
     puede_modificar, mensaje_modificacion = reserva.puede_modificarse()
@@ -215,14 +239,44 @@ def detalle_reserva(request, numero_reserva):
         'reserva': reserva,
         'puede_modificar': puede_modificar,
         'mensaje_modificacion': mensaje_modificacion,
-        'proxima_clase_info': reserva.get_proxima_clase_info()
+        'proxima_clase_info': reserva.get_proxima_clase_info(),
+        'es_propietario': es_propietario
     })
 
-@require_http_methods(["POST"])
+
+# Vista para mostrar clases disponibles (pública)
+def clases_disponibles(request):
+    """
+    Muestra todas las clases disponibles con información de cupos.
+    Vista informativa pública.
+    """
+    clases = Clase.objects.filter(activa=True).order_by('tipo', 'dia', 'horario')
+    
+    clases_info = []
+    for clase in clases:
+        clases_info.append({
+            'clase': clase,
+            'cupos_disponibles': clase.cupos_disponibles(),
+            'esta_completa': clase.esta_completa(),
+            'porcentaje_ocupacion': clase.get_porcentaje_ocupacion()
+        })
+    
+    return render(request, 'PilatesGravity/clases_disponibles.html', {
+        'clases_info': clases_info
+    })
+
+
+# Vista para el botón de "Conoce más" (pública)
+def conoce_mas(request):
+    """Vista informativa sobre el estudio"""
+    return render(request, 'PilatesGravity/conoce_mas.html')
+
+
+# API Endpoints para funcionalidad AJAX
 @require_http_methods(["POST"])
 def dias_disponibles(request):
     """
-    Devuelve los días únicos disponibles para un tipo de clase específico
+    API que devuelve los días únicos disponibles para un tipo de clase específico
     """
     try:
         data = json.loads(request.body)
@@ -231,15 +285,18 @@ def dias_disponibles(request):
         if not tipo_clase:
             return JsonResponse({'error': 'Tipo de clase requerido'}, status=400)
 
-        # Obtiene todas las clases del tipo seleccionado
-        clases = Clase.objects.filter(tipo=tipo_clase).values_list('dia', flat=True)
+        # Obtener días únicos para el tipo de clase (solo clases activas)
+        dias_disponibles = Clase.objects.filter(
+            tipo=tipo_clase, 
+            activa=True
+        ).values_list('dia', flat=True).distinct()
 
-        # Elimina duplicados usando set
-        dias_unicos = list(set(clases))
-
-        # Ordena los días según el orden de la semana
+        # Ordenar días según el orden de la semana
         orden_dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
-        dias_ordenados = sorted(dias_unicos, key=lambda x: orden_dias.index(x) if x in orden_dias else 999)
+        dias_ordenados = sorted(
+            set(dias_disponibles), 
+            key=lambda x: orden_dias.index(x) if x in orden_dias else 999
+        )
 
         return JsonResponse({
             'dias': dias_ordenados
@@ -250,10 +307,11 @@ def dias_disponibles(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+
 @require_http_methods(["POST"])
 def horarios_disponibles(request):
     """
-    Devuelve los horarios disponibles para un tipo de clase y día específicos
+    API que devuelve los horarios disponibles para un tipo de clase y día específicos
     """
     try:
         data = json.loads(request.body)
@@ -263,10 +321,11 @@ def horarios_disponibles(request):
         if not tipo_clase or not dia_clase:
             return JsonResponse({'error': 'Tipo de clase y día requeridos'}, status=400)
         
-        # Obtiene horarios para la combinación tipo-día
+        # Obtener horarios para la combinación tipo-día (solo clases activas)
         clases = Clase.objects.filter(
             tipo=tipo_clase, 
-            dia=dia_clase
+            dia=dia_clase,
+            activa=True
         ).order_by('horario')
         
         horarios_info = []
@@ -288,10 +347,11 @@ def horarios_disponibles(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+
 @require_http_methods(["POST"])
 def verificar_disponibilidad(request):
     """
-    Verifica la disponibilidad de una combinación específica tipo-día-horario
+    API que verifica la disponibilidad de una combinación específica tipo-día-horario
     """
     try:
         data = json.loads(request.body)
@@ -306,7 +366,12 @@ def verificar_disponibilidad(request):
         horario_time = datetime.strptime(horario_str, '%H:%M').time()
         
         try:
-            clase = Clase.objects.get(tipo=tipo_clase, dia=dia_clase, horario=horario_time)
+            clase = Clase.objects.get(
+                tipo=tipo_clase, 
+                dia=dia_clase, 
+                horario=horario_time,
+                activa=True
+            )
             cupos_disponibles = clase.cupos_disponibles()
             
             return JsonResponse({
@@ -319,7 +384,7 @@ def verificar_disponibilidad(request):
         except Clase.DoesNotExist:
             return JsonResponse({
                 'disponible': False,
-                'mensaje': 'Esta combinación de clase no existe'
+                'mensaje': 'Esta combinación de clase no existe o no está activa'
             })
             
     except json.JSONDecodeError:
@@ -329,13 +394,14 @@ def verificar_disponibilidad(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+
 @require_http_methods(["GET"])
 def clases_disponibles_api(request):
     """
-    Devuelve todas las clases disponibles con información de cupos
+    API que devuelve todas las clases disponibles con información de cupos
     """
     try:
-        clases = Clase.objects.all().order_by('tipo', 'dia', 'horario')
+        clases = Clase.objects.filter(activa=True).order_by('tipo', 'dia', 'horario')
         
         clases_data = []
         for clase in clases:

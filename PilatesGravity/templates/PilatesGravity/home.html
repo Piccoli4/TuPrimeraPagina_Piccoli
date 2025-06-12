@@ -19,11 +19,11 @@
         <!-- Contenido de Home --> 
         <div class="hero-content">
             <div class="hero-text">
-                <h1>Descubre <br><span>Pilates Gravity</span></h1>
+                <h1>Descubre<br><span>Pilates Gravity</span></h1>
                 <p>Transforma tu cuerpo, equilibra tu mente y eleva tu bienestar con nuestro método único de Pilates.</p>
                 <div class="hero-buttons">
-                    <a href="{% url 'reservar_clase' %}" class="btn btn-primary">Reserva tu clase</a>
-                    <a href="{% url 'conoce_mas' %}" class="btn btn-secondary">Conoce más</a>
+                    <a href="{% url 'PilatesGravity:reservar_clase' %}" class="btn btn-primary">Reserva tu clase</a>
+                    <a href="{% url 'PilatesGravity:conoce_mas' %}" class="btn btn-secondary">Conoce más</a>
                 </div>
             </div>
             <div class="hero-image">
@@ -142,7 +142,7 @@
                         </p>
                         <div class="card-footer">
                             <span>50 minutos</span>
-                            <a href="{% url 'reservar_clase' %}?tipo=Cadillac" class="btn-reservar">Reservar</a>
+                            <a href="{% url 'PilatesGravity:reservar_clase' %}?tipo=Cadillac" class="btn-reservar">Reservar</a>
                         </div>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                         <p>Sesiones personalizadas enfocadas en rehabilitación y corrección postural.</p>
                         <div class="card-footer">
                             <span>45 minutos</span>
-                            <a href="{% url 'reservar_clase' %}?tipo=Reformer" class="btn-reservar">Reservar</a>
+                            <a href="{% url 'PilatesGravity:reservar_clase' %}?tipo=Reformer" class="btn-reservar">Reservar</a>
                         </div>
                     </div>
                 </div>
@@ -254,7 +254,7 @@
                             <div class="contact-card">
                                 <img src="{% static 'icons/email.png' %}" alt="Icono de email">
                                 <h4>E-mail</h4>
-                                <p>gravity@gmail.com</p>
+                                <p>pilatesgravity@gmail.com</p>
                             </div>
                         </a>
                         <a href="https://www.instagram.com/pilatesgravity/" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
@@ -504,6 +504,7 @@
         });
 
     </script>
+    <script src="{% static 'js/sections_animations.js' %}"></script>
 
 
 {% endblock %}

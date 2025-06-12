@@ -104,6 +104,33 @@ h2 {
     color: var(--principal);
 }
 
+.menu-toggle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-greeting {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.auth-greeting:hover {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
 .menu-toggle {
     display: none;
     background: none;
@@ -111,6 +138,33 @@ h2 {
     color: white;
     font-size: 28px;
     cursor: pointer;
+}
+
+.auth-item {
+    display: inline;
+    align-self: baseline;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.auth-item:hover {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.auth-icon {
+    width: 36px;
+    height: 36px;
+    vertical-align: middle;
+    color: #FFF;
+}
+
+.auth-text {
+    font-size: 0.8rem;
+    color: white;
+    font-weight: 600;
+    margin: 5px 0;
 }
 
 /* Estilo responsive pantallas menores a 480px */
@@ -163,6 +217,76 @@ h2 {
         flex-direction: column;
         align-items: center;
         justify-content: center;
+    }
+
+    /* Ocultar botones de autenticación del header en móvil */
+    .menu-toggle-container .auth-item {
+        display: none !important;
+    }
+
+    /* Ocultar el texto "Hola, usuario" en móvil */
+    .menu-toggle-container > a:first-child {
+        display: none !important;
+    }
+
+    .auth-buttons {
+        display: none !important; 
+    }
+
+    /* Mostrar botones de autenticación en el menú móvil */
+    nav ul .auth-item {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin: 5px auto;
+        padding: 8px 14px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        width: fit-content;
+        max-width: 200px;
+    }
+
+    nav ul .auth-item .auth-icon {
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+
+    nav ul .auth-item .auth-text {
+        display: inline;
+        font-size: 0.8rem;
+        color: white;
+        font-weight: 600;
+        margin: 5px 0 0 0;
+        vertical-align: middle;
+    }
+
+    /* Centrar todos los elementos li del menú */
+    nav ul li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    nav ul li a {
+        text-align: center;
+        width: fit-content;
+    }
+}
+
+/* Oculta elementos de autenticación duplicados en pantallas mayores a 769px */
+@media (min-width: 769px) {
+    /* Oculta auth-items del menú de navegación */
+    nav ul .auth-item {
+        display: none !important;
+    }
+    
+    /* Mostrar solo los auth-items del header */
+    .menu-toggle-container .auth-item {
+        display: inline-block !important;
     }
 }
 

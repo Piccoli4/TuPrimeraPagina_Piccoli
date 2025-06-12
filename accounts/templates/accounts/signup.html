@@ -1,0 +1,124 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Registro - Pilates Gravity{% endblock %}
+
+{% block content %}
+
+    <!-- Mostrar solo mensajes relacionados con registro -->
+    {% if messages %}
+        {% for message in messages %}
+            {% if "registro" in message.message|lower or "cuenta" in message.message|lower or "usuario" in message.message|lower or "email" in message.message|lower or "contraseña" in message.message|lower or "registrado" in message.message|lower or "creado" in message.message|lower %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="auth-header">
+        <h2>Crear Cuenta</h2>
+        <p>Únete a la comunidad de Pilates Gravity</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="id_first_name" class="form-label">Nombre</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.first_name.errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="col-md-6 mb-3">
+                <label for="id_last_name" class="form-label">Apellido</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.last_name.errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_username" class="form-label">Usuario</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.username.errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_email" class="form-label">Email</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.email.errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_telefono" class="form-label">Teléfono</label>
+            {{ form.telefono }}
+            {% if form.telefono.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.telefono.errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if form.telefono.help_text %}
+                <div class="form-text">{{ form.telefono.help_text }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_password1" class="form-label">Contraseña</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.password1.errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-4">
+            <label for="id_password2" class="form-label">Confirmar Contraseña</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.password2.errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="d-grid mb-4">
+            <button type="submit" class="btn btn-primary">Crear Cuenta</button>
+        </div>
+    </form>
+
+    <div class="auth-links">
+        <p>¿Ya tienes cuenta? <a href="{% url 'accounts:login' %}">Inicia sesión aquí</a></p>
+    </div>
+{% endblock %}

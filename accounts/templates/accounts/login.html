@@ -1,0 +1,133 @@
+{% extends 'accounts/base.html' %}
+
+{% load static %}
+
+{% block title %}Iniciar Sesión - Pilates Gravity{% endblock %}
+
+{% block content %}
+    <!-- Mostrar solo mensajes relacionados con login -->
+    {% if messages %}
+        {% for message in messages %}
+            {% if "login" in message.message|lower or "credenciales" in message.message|lower or "usuario" in message.message|lower or "contraseña" in message.message|lower or message.tags == 'error' or message.tags == 'danger' %}
+                <div class="login-alert login-alert-{{ message.tags }} fade-in">
+                    {{ message }}
+                    <button type="button" class="alert-close-btn" onclick="this.parentElement.style.display='none'">×</button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="login-header">
+        <div class="login-icon">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V18C3 19.1 3.9 20 5 20H19C20.1 20 21 19.1 21 18V9ZM19 9H14V4H5V18H19V9Z" fill="currentColor"/>
+            </svg>
+        </div>
+        <h2 class="login-title">Iniciar Sesión</h2>
+        <p class="login-subtitle">Accede a tu cuenta de Pilates Gravity</p>
+        <div class="login-divider"></div>
+    </div>
+
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        
+        <div class="login-field-group">
+            <label for="id_username" class="login-label">
+                <span class="label-icon">👤</span>
+                Usuario
+            </label>
+            <div class="login-input-wrapper">
+                <input type="text" 
+                    class="login-input" 
+                    name="username" 
+                    id="id_username"
+                    placeholder="Ingresa tu nombre de usuario"
+                    required>
+                <div class="input-focus-line"></div>
+            </div>
+            {% if form.username.errors %}
+                <div class="login-error-message">
+                    {% for error in form.username.errors %}
+                        <span class="error-text">⚠️ {{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="login-field-group">
+            <label for="id_password" class="login-label">
+                <span class="label-icon">🔒</span>
+                Contraseña
+            </label>
+            <div class="login-input-wrapper">
+                <input type="password" 
+                    class="login-input" 
+                    name="password" 
+                    id="id_password"
+                    placeholder="Ingresa tu contraseña"
+                    required>
+                <div class="input-focus-line"></div>
+                <button type="button" class="password-toggle" onclick="togglePassword('id_password', this)">
+                    <span class="toggle-icon">👁️</span>
+                </button>
+            </div>
+            {% if form.password.errors %}
+                <div class="login-error-message">
+                    {% for error in form.password.errors %}
+                        <span class="error-text">⚠️ {{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="login-submit-section">
+            <button type="submit" class="login-submit-btn">
+                <span class="btn-text">Iniciar Sesión</span>
+                <span class="btn-icon">→</span>
+            </button>
+        </div>
+    </form>
+
+    <div class="login-footer">
+        <div class="login-divider-with-text">
+            <span>¿No tienes cuenta?</span>
+        </div>
+        <a href="{% url 'accounts:signup' %}" class="login-register-link">
+            <span class="register-icon">✨</span>
+            Regístrate aquí
+        </a>
+    </div>
+
+    <!-- Script para toggle de contraseña -->
+    <script>
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('.toggle-icon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = '🙈';
+                button.setAttribute('aria-label', 'Ocultar contraseña');
+            } else {
+                input.type = 'password';
+                icon.textContent = '👁️';
+                button.setAttribute('aria-label', 'Mostrar contraseña');
+            }
+        }
+
+        // Animación de entrada
+        document.addEventListener('DOMContentLoaded', function() {
+            const formElements = document.querySelectorAll('.login-field-group, .login-submit-section');
+            formElements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    element.style.transition = 'all 0.6s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, 200 * index);
+            });
+        });
+    </script>
+{% endblock %}

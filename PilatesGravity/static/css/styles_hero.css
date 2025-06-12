@@ -132,3 +132,85 @@
         gap: 110px;
     }
 }
+
+/* Responsive para pantallas menores a 640px */
+@media (max-width: 640px) {
+
+    .hero-text {
+        text-align: center;
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    
+    .hero-content {
+        gap: 40px; 
+        padding: 0 15px;
+    }
+
+    .hero-text h1 {
+        font-size: 2rem; 
+        line-height: 1.1;
+        margin-bottom: 12px; 
+    }
+    
+    .hero-text h1 span {
+        color: #5D768B;
+    }
+    
+    .hero-text p {
+        font-size: 1rem; 
+        line-height: 1.4;
+        margin-bottom: 15px; 
+    }
+    
+    .hero-buttons {
+        gap: 12px; 
+    }
+    
+    .btn {
+        padding: 10px 20px; 
+        font-size: 0.9rem; 
+        font-weight: bold;
+    }
+    
+    /* Ajustes específicos para las animaciones en móvil */
+    .typewriter-text {
+        font-size: 2rem !important;
+    }
+    
+    .typewriter-cursor {
+        height: 1em; 
+        width: 2px; 
+    }
+    
+    /* Ajustar spacing entre líneas del typewriter */
+    .typewriter-line.second-line {
+        margin-top: 0.1em; 
+    }
+}
+
+/* Para pantallas menores a 480px */
+@media (max-width: 480px) {
+    .hero-text h1 {
+        font-size: 1.8rem; 
+        margin-bottom: 10px;
+    }
+    
+    .hero-text p {
+        font-size: 0.8rem;
+        margin-bottom: 18px;
+    }
+    
+    .btn {
+        padding: 9px 18px;
+        font-size: 0.85rem;
+    }
+    
+    .typewriter-text {
+        font-size: 1.9rem !important;
+    }
+    
+    .hero-buttons {
+        gap: 10px;
+    }
+}

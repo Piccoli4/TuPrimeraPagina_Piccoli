@@ -3,10 +3,14 @@
     min-height: 80vh;
 }
 
+.section-title h2 {
+    margin-top: 5px;
+}
+
 .reservation-form {
     background-color: var(--secundario);
     border-radius: 15px;
-    padding: 40px;
+    padding: 40px 40px 0 40px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 40px;
 }
@@ -40,6 +44,10 @@
     .reservation-form form > div:last-child {
         grid-column: 1 / -1;
         grid-row: 2;
+    }
+
+    .form-actions {
+        padding: 0 !important;
     }
 }
 
